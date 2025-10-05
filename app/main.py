@@ -7,6 +7,7 @@ from typing import AsyncIterable
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, Query, WebSocket
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from google.adk.agents import LiveRequestQueue
@@ -173,6 +174,14 @@ async def client_to_agent_messaging(
 #
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 STATIC_DIR = Path("static")
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
